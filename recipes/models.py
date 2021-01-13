@@ -24,8 +24,6 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         upload_to='recipes/',
-        null=True,
-        blank=True,
         verbose_name='Фото',
     )
     description = models.TextField(
@@ -36,12 +34,6 @@ class Recipe(models.Model):
         'Ingredient',
         through='IngredientValue',
         verbose_name='Ингридиенты',
-    )
-    slug = models.SlugField(
-        max_length=255,
-        unique=True,
-        blank=True,
-        allow_unicode=True,
     )
     tags = models.CharField(
         max_length=10,
@@ -65,22 +57,29 @@ class Recipe(models.Model):
     def __str__(self):
         return self.name
 
+    def display_favorites(self):
+        return ', '.join(
+            self.favorites.all().values_list(
+                'user__username',
+                flat=True
+            )
+        )
+
+    display_favorites.short_description = 'В избранном'
+
 
 class Ingredient(models.Model):
     title = models.CharField(
         verbose_name='Название',
         max_length=200,
-        null=True,
-        blank=True,
     )
     unit_of_measure = models.CharField(
         verbose_name='Единица измерения',
         max_length=50,
-        null=True,
-        blank=True,
     )
     portion = models.ManyToManyField(
-        Recipe, through='IngredientValue'
+        Recipe,
+        through='IngredientValue'
     )
 
     class Meta:
@@ -106,6 +105,19 @@ class IngredientValue(models.Model):
     )
     amount = models.PositiveSmallIntegerField(
         verbose_name='Количество',
+    )
+
+
+class ShoppingList(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='user_shopping_list'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='recipe_shopping_list'
     )
 
 
