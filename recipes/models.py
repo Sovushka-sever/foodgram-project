@@ -8,6 +8,7 @@ class Tag_recipes(models.TextChoices):
     BREAKFAST = 'breakfast', 'Завтрак'
     LUNCH = 'lunch', 'Обед'
     DINNER = 'dinner', 'Ужин'
+    TAGS = [BREAKFAST, LUNCH, DINNER]
 
 
 class Recipe(models.Model):
@@ -73,7 +74,7 @@ class Ingredient(models.Model):
         verbose_name='Название',
         max_length=200,
     )
-    unit_of_measure = models.CharField(
+    dimension = models.CharField(
         verbose_name='Единица измерения',
         max_length=50,
     )
