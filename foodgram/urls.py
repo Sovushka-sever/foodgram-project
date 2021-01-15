@@ -13,11 +13,13 @@
 #     1. Import the include() function: from django.urls import include, path
 #     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 # """
-# from django.contrib import admin
-# from django.urls import path, include
-# from django.views.generic import TemplateView
+from django.contrib import admin
+from django.urls import path, include
+from django.conf.urls import handler404, handler500
+from django.conf.urls.static import static
+from django.conf import settings
 #
-# urlpatterns = [
+urlpatterns = [
 #     path('admin/', admin.site.urls),
 #     path('redoc/', TemplateView.as_view(
 #         template_name='redoc.html'
@@ -25,4 +27,16 @@
 #     path('api/', include('users.urls')),
 #     path('api/', include('reviews.urls')),
 #     path('api/', include('artworks.urls')),
-# ]
+]
+
+
+handler404 = "foodgram.views.page_not_found"  # noqa
+handler500 = "foodgram.views.server_error"  # noqa
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )
+    urlpatterns += static(
+        settings.STATIC_URL, document_root=settings.STATIC_ROOT
+    )

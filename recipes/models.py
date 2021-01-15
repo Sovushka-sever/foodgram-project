@@ -3,12 +3,31 @@ from django.db import models
 
 User = get_user_model()
 
+#
+# class Tag_recipes(models.TextChoices):
+#     BREAKFAST = 'breakfast', 'Завтрак'
+#     LUNCH = 'lunch', 'Обед'
+#     DINNER = 'dinner', 'Ужин'
+#     TAGS = [BREAKFAST, LUNCH, DINNER]
+#
 
-class Tag_recipes(models.TextChoices):
-    BREAKFAST = 'breakfast', 'Завтрак'
-    LUNCH = 'lunch', 'Обед'
-    DINNER = 'dinner', 'Ужин'
-    TAGS = [BREAKFAST, LUNCH, DINNER]
+
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(
+        unique=True,
+        max_length=100,
+        blank=True,
+        null=True
+    )
+    color = models.CharField(
+        max_length=15,
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        return self.slug
 
 
 class Recipe(models.Model):
@@ -36,10 +55,11 @@ class Recipe(models.Model):
         through='IngredientValue',
         verbose_name='Ингридиенты',
     )
-    tags = models.CharField(
-        max_length=10,
-        choices=Tag_recipes.choices,
-    )
+    # tags = models.CharField(
+    #     max_length=10,
+    #     choices=Tag_recipes.choices,
+    # )
+    tags = models.ManyToManyField(Tag)
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name='Время приготовления',
         help_text='в минутах',

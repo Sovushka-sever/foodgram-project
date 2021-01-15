@@ -11,9 +11,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+# from dotenv import load_dotenv
+#
+# load_dotenv()
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from datetime import timedelta
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,9 +29,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'p&l%385148kslhtyn^##a1)ilz@4zqj=rq&agdol^##zgl9(vs'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'testserver',
+    '*',
+]
 
 
 # Application definition
@@ -41,8 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'users',
-    'artworks',
-    'reviews',
+    'recipes',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +64,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'api_yamdb.urls'
+ROOT_URLCONF = 'foodgram.urls'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 TEMPLATES = [
@@ -69,27 +78,38 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "recipe.context_processors.counter",
+                "recipe.context_processors.all_tags",
+                "recipe.context_processors.filter_in_url",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'api_yamdb.wsgi.application'
+WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PORT": os.environ.get("DB_PORT"),
     }
 }
+
+
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
 
 
 # Password validation
@@ -110,12 +130,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'users.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -130,27 +149,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Login
+LOGIN_URL = "/auth/login/"
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
         'rest_framework.permissions.AllowAny',
     ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
-}
+ }
+
+SITE_ID = 1
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
-}
+
