@@ -8,7 +8,7 @@ User = get_user_model()
 #     BREAKFAST = 'breakfast', 'Завтрак'
 #     LUNCH = 'lunch', 'Обед'
 #     DINNER = 'dinner', 'Ужин'
-#     TAGS = [BREAKFAST, LUNCH, DINNER]
+#
 #
 
 
@@ -112,16 +112,16 @@ class Ingredient(models.Model):
 
 
 class IngredientValue(models.Model):
-    ingridient = models.ForeignKey(
+    ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
-        related_name='ingridient_values',
+        related_name='ingredient_values',
         verbose_name='Ингридиент',
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='ingridient_values',
+        related_name='recipe_ingredients',
         verbose_name='Рецепт',
     )
     amount = models.PositiveSmallIntegerField(
@@ -140,6 +140,10 @@ class ShoppingList(models.Model):
         on_delete=models.CASCADE,
         related_name='recipe_shopping_list'
     )
+
+    class Meta:
+        verbose_name = 'Список покупок'
+        verbose_name_plural = 'Список покупок'
 
 
 class Subscription(models.Model):

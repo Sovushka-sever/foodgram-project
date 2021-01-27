@@ -24,24 +24,28 @@ def index(request):
         recipe_list = recipe_list.filter(
             tags__slug__in=tags_slug).distinct().all()
 
-    paginator = Paginator(recipe_list, 5)
+    paginator = Paginator(recipe_list, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
     return render(
         request,
         'index.html',
-        {'page': page, 'paginator': paginator, }
+        {'page': page, 'paginator': paginator}
     )
 
 
 def new_recipe(request):
+    header = 'Создание рецепта'
+    button = 'Создать рецепт'
     user = User.objects.get(username=request.user)
     if request.method == 'POST':
         form = RecipeForm(request.POST or None, files=request.FILES or None)
         ingredients = get_ingredients(request)
+
         if not ingredients:
             form.add_error(None, 'Добавьте ингредиенты')
+
         elif form.is_valid():
             recipe = form.save(commit=False)
             recipe.author = user
@@ -58,18 +62,29 @@ def new_recipe(request):
             return redirect('index')
     else:
         form = RecipeForm()
-    return render(request, 'new_recipe.html', {'form': form})
+    return render(
+        request,
+        'new_recipe.html',
+        {'form': form,
+         'header': header,
+         'button': button}
+    )
 
 
 def recipe_edit(request, recipe_id):
+    header = 'Редактирование рецепта'
+    button = 'Сохранить'
     recipe = get_object_or_404(Recipe, id=recipe_id)
 
     if request.user != recipe.author:
         return redirect('index')
 
-    if request.method == "POST":
-        form = RecipeForm(request.POST or None,
-                          files=request.FILES or None, instance=recipe)
+    if request.method == 'POST':
+        form = RecipeForm(
+            request.POST or None,
+            files=request.FILES or None,
+            instance=recipe
+        )
         ingredients = get_ingredients(request)
         if form.is_valid():
             IngredientValue.objects.filter(recipe=recipe).delete()
@@ -87,8 +102,14 @@ def recipe_edit(request, recipe_id):
     form = RecipeForm(request.POST or None,
                       files=request.FILES or None, instance=recipe)
 
-    return render(request, 'recipe_edit.html',
-                  {'form': form, 'recipe': recipe, })
+    return render(
+        request,
+        'recipe_edit.html',
+        {'form': form,
+         'header': header,
+         'button': button,
+         'recipe': recipe}
+    )
 
 
 def recipe_delete(request, recipe_id):
@@ -104,7 +125,7 @@ def recipe_view(request, recipe_id, username):
     username = get_object_or_404(User, username=username)
 
     return render(request, 'singlePage.html',
-                  {'username': username, 'recipe': recipe, })
+                  {'username': username, 'recipe': recipe})
 
 
 def profile(request, username):
@@ -125,10 +146,10 @@ def profile(request, username):
             following = None
         else:
             following = True
-        return render(request, "authorRecipe.html",
+        return render(request, 'authorRecipe.html',
                       {'username': username, 'page': page,
                        'paginator': paginator, 'following': following})
-    return render(request, "authorRecipe.html",
+    return render(request, 'authorRecipe.html',
                   {'username': username, 'page': page,
                    'paginator': paginator, })
 
@@ -169,14 +190,14 @@ def shopping_list(request):
     )
 
 
-def download_card(request):
+def download_list(request):
     recipes = Recipe.objects.filter(recipe_shopping_list__user=request.user)
     ingredients = recipes.values(
         'ingredients__title', 'ingredients__dimension'
     ).annotate(
         total_amount=Sum('recipe_ingredients__amount')
     )
-    file_data = ""
+    file_data = ''
 
     for item in ingredients:
         line = ' '.join(str(value) for value in item.values())
