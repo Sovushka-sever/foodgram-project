@@ -1,58 +1,70 @@
 {% extends 'base.html' %}
-{% block title %} {{ header }} {% endblock title %}
 {% load static %}
-{% csrf_token %}
+{% load thumbnail %}
+{% load templates_filters %}
+{% load user_filters %}
+
+{% block title %} Мои подписки {% endblock title %}
+
 {% block stylesheet %}
-    <link rel="stylesheet" href={% static 'pages/myFollow.css' %}>
+<link rel="stylesheet" href={% static '/pages/myFollow.css' %}>
 {% endblock stylesheet %}
 
-{% load user_filters %}
 {% block content %}
-    <main class="main container">
-        <div class="main__header">
-            <h1 class="main__title">{{ header }}</h1>
-        </div>
-        {% csrf_token %}
-        <div class="card-list">
-            {% for item in page %}
-                <div class="card-user" data-author="{{ item.author.id }}">
-                    <div class="card-user__header">
-                        <h2 class="card-user__title">{{ item.author.get_full_name }}</h2>
-                    </div>
-                    <div class="card-user__body">
-                        <ul class="card-user__items">
-                            {% for recipe in item.author.recipes_author.all|slice:":3" %}
-                                <li class="card-user__item">
-                                    <div class="recipe">
-                                        <img src="{{ recipe.image.url }}" alt="какой-то-текст" class="recipe__image">
-                                        <h3 class="recipe__title">{{ recipe.title }}</h3>
-                                        <p class="recipe__text"><span
-                                                class="icon-time"></span> {{ recipe.cooking_time }} мин.</p>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                            <li class="card-user__item">
-                                <a href="{% url 'profile' item.author.username %}" class="card-user__link link">
-                                    {% if item.author.recipes_author.count > 3 %}Еще
-                                        {{ item.author.recipes_author.count }}... {% endif %}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-user__footer">
-                        <button class="button button_style_light-blue button_size_auto" name="subscribe">{{ button }}
-                        </button>
-                    </div>
-                </div>
-            {% endfor %}
+<div class="main__header">
+    <h1 class="main__title"> Мои подписки </h1>
+</div>
+
+{% csrf_token %}
+<div class="card-list">
+    {% for item in page %}
+    <div class="card-user" data-author="{{ item.author.id }}">
+        <div class="card-user__header">
+            <a href="{% url 'profile' item.author.username %}"><h2
+                    class="card-user__title">{{ item.author.get_full_name }}</h2></a>
         </div>
 
-        {% include 'includes/paginator.html' %}
+        <div class="card-user__body">
+            {% for recipe in item.author.recipes.all|slice:":3" %}
+            <ul class="card-user__items">
+                <li class="card-user__item">
+                    <div class="recipe">
 
-    </main>
-{% endblock %}
+                        {% thumbnail recipe.image "72x72" crop="center" upscale=True as im %}
+                        <a href="{{ recipe_id }}"><img src="{{ im.url }}" alt="{{ recipe.name }}" class="recipe__image"></a>
+                        {% endthumbnail %}
+
+                        <h3 class="recipe__title">{{ recipe.name }}</h3>
+                        <p class="recipe__text"><span
+                                class="icon-time"></span> {{ recipe.cooking_time }} мин.</p>
+                    </div>
+                </li>
+                {% endfor %}
+                {% if item.author.recipes.all|length > 3 %}
+                <li class="card-user__item">
+                    <a href="{% url 'profile' item.author.username %}" class="card-user__link link">Еще {{
+                        item.author.recipes.all|length|add:"-3" }} рецепт{{ item.author.recipes.all|length|add:"-3"|plural_recipe }}...</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="card-user__footer">
+            <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться от автора</button>
+        </div>
+    </div>
+    {% empty %}
+    <p>Вы пока ни на кого не подписались</p>
+    {% endfor %}
+</div>
+
+{% if page.has_other_pages %}
+{% include "includes/paginator.html" with items=page_item paginator=paginator %}
+{% endif %}
+
+{% endblock content %}
 
 {% block connect_js %}
 
-    {% include "includes/connect_js.html" with page="myFollow" %}
+{% include "includes/connect_js.html" with page="myFollow" %}
 
 {% endblock connect_js %}

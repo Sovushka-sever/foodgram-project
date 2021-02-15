@@ -1,50 +1,53 @@
 {% extends 'base.html' %}
-{% block title %} {{ recipe.author }} {% endblock title %}
 {% load static %}
-{% csrf_token %}
-{% block stylesheet %}
-    <link rel="stylesheet" href={% static 'pages/index.css' %}>
-{% endblock stylesheet %}
 {% load user_filters %}
 {% load templates_filters %}
 
+{% block title %} Рецепты автора: {{ recipe.author }} {% endblock title %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock stylesheet %}
+
+
 {% block content %}
-    <main class="main container">
-        <div class="main__header">
-            <h1 class="main__title">{{ username.get_full_name }} </h1>
-            {% include 'includes/tags.html' %}
-        </div>
 
-        {% if user.username != profile.username %}
+{% csrf_token %}
+<div class="main__header">
+    <h1 class="main__title">{{ username.get_full_name }} </h1>
+</div>
 
-            <div class="author-subscribe" data-author="{{ username.id }}">
-                {% if user.is_authenticated %}
-                    {% if username|is_follow:user %}
-                        <button class="button button_style_light-blue button_size_auto" name="subscribe"><span
-                                class="icon-check button__icon"></span>Отписаться от автора
-                        </button></p>
-                    {% else %}
-                        <p style="padding: 0 0 2em 0;">
-                            <button class="button button_style_light-blue button_size_auto" name="subscribe" data-out>
-                                Подписаться на автора
-                            </button>
-                        </p>
-                    {% endif %}
-                {% endif %}
-            </div>
+{% if user.username != profile.username and user.is_authenticated %}
 
-        {% endif %}
+<div class="author-subscribe" data-author="{{ username.id }}">
+    {% if username|is_follow:user %}
+    <p style="padding: 0 0 2em 0;">
+        <button class="button button_style_light-blue button_size_auto" name="subscribe"><span
+                class="icon-check button__icon"></span>Отписаться от автора
+        </button>
+    </p>
+    {% else %}
+    <p style="padding: 0 0 2em 0;">
+        <button class="button button_style_light-blue button_size_auto" name="subscribe" data-out>
+            Подписаться на автора
+        </button>
+    </p>
+    {% endif %}
+</div>
+{% endif %}
 
-        <div class="card-list">
-            {% for recipe in page %}
-                {% include 'recipe.html' %}
-            {% endfor %}
-            {% csrf_token %}
-        </div>
-        {% include 'includes/paginator.html' %}
-    </main>
-{% endblock  content %}
+<div class="card-list">
+    {% for recipe in page %}
+    {% include 'recipe.html' %}
+    {% endfor %}
+</div>
+
+{% if page_obj.has_other_pages %}
+{% include "includes/paginator.html" with items=page_obj paginator=paginator %}
+{% endif %}
+
+{% endblock content %}
 
 {% block connect_js %}
-    {% include "includes/connect_js.html" with page="authorRecipe" %}
+{% include "includes/connect_js.html" with page="authorRecipe" %}
 {% endblock connect_js %}

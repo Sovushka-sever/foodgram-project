@@ -1,5 +1,5 @@
 <!doctype html>
-{% load staticfiles %}
+{% load static %}
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -14,6 +14,7 @@
 
     <body class="body">
         {% include 'includes/nav.html' %}
+
         {# csrf_token to send POST and DELETE requests to the API via JS #}
         {% csrf_token %}
         <main class="main container">
@@ -26,4 +27,5 @@
         {% block connect_js %}
         {% endblock connect_js %}
     </body>
+
 </html>

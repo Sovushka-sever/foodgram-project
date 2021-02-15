@@ -30,6 +30,24 @@ class Tag(models.Model):
         return self.slug
 
 
+class Ingredient(models.Model):
+    title = models.CharField(
+        verbose_name='Название',
+        max_length=200,
+    )
+    dimension = models.CharField(
+        verbose_name='Единица измерения',
+        max_length=50,
+    )
+
+    class Meta:
+        verbose_name = 'Ингридиент'
+        verbose_name_plural = 'Ингридиенты'
+
+    def __str__(self):
+        return self.title
+
+
 class Recipe(models.Model):
     author = models.ForeignKey(
         User,
@@ -51,7 +69,7 @@ class Recipe(models.Model):
         max_length=5000
     )
     ingredients = models.ManyToManyField(
-        'Ingredient',
+        Ingredient,
         through='IngredientValue',
         verbose_name='Ингридиенты',
     )
@@ -87,28 +105,6 @@ class Recipe(models.Model):
         )
 
     display_favorites.short_description = 'В избранном'
-
-
-class Ingredient(models.Model):
-    title = models.CharField(
-        verbose_name='Название',
-        max_length=200,
-    )
-    dimension = models.CharField(
-        verbose_name='Единица измерения',
-        max_length=50,
-    )
-    portion = models.ManyToManyField(
-        Recipe,
-        through='IngredientValue'
-    )
-
-    class Meta:
-        verbose_name = 'Ингридиент'
-        verbose_name_plural = 'Ингридиенты'
-
-    def __str__(self):
-        return self.title
 
 
 class IngredientValue(models.Model):

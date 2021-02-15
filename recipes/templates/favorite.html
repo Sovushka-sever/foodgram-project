@@ -1,32 +1,36 @@
 {% extends 'base.html' %}
-{% block title %} Рецепты {% endblock %}
 {% load static %}
-{% csrf_token %}
-{% block stylesheet %}
-    <link rel="stylesheet" href={% static 'pages/index.css' %}>
-{% endblock stylesheet %}
-{% block index %}
-    <li class="nav__item nav__item_active">
-{% endblock index %}
 {% load user_filters %}
 {% load templates_filters %}
 
-{% block content %}
-    <main class="main container">
-        <div class="main__header">
-            <h1 class="main__title">Избранное</h1>
-            {% include 'includes/tags.html' %}
-        </div>
-        <div class="card-list">
-            {% for recipe in page %}
-                {% include 'recipe.html' %}
-            {% endfor %}
+{% block title %} Избранное {% endblock title%}
 
-            {% csrf_token %}
-        </div>
-        {% include 'includes/paginator.html' %}
-    </main>
-{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock stylesheet %}
+
+{% block content %}
+{% csrf_token %}
+<div class="main__header">
+    <h1 class="main__title">Избранное</h1>
+
+    {% include "includes/tags.html" with page="favorite" %}
+</div>
+<div class="card-list">
+    {% for recipe in page %}
+    {% include 'recipe.html' %}
+    {% empty %}
+    <p>Список избранных рецептов пока пуст </p>
+    {% endfor %}
+
+
+</div>
+{% if page_obj.has_other_pages %}
+{% include "includes/paginator.html" with items=page_obj paginator=paginator filters=filters%}
+{% endif %}
+
+{% endblock content %}
+
 {% block connect_js %}
-    {% include "includes/connect_js.html" with page="favorite" %}
+{% include "includes/connect_js.html" with page="favorite" %}
 {% endblock connect_js %}

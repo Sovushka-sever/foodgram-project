@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class PostsConfig(AppConfig):
-    name = 'posts'
+class RecipesConfig(AppConfig):
+    name = 'recipes'
+    verbose_name = 'Рецепты'

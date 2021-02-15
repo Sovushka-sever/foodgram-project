@@ -5,10 +5,10 @@
             <ul class="nav__items list">
             {% if user.is_authenticated %}
                 <li class="nav__item {% if current_page == "index" %}nav__item_active {% endif %}"><a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
-                <li class="nav__item {% if current_page == "create_recipe" %}nav__item_active {% endif %}"><a href="{% url 'new_recipe' %}" class="nav__link link">Создать рецепт</a></li>
-                <li class="nav__item {% if current_page == "subscription" %}nav__item_active {% endif %}"><a href="{% url 'subscription' user.username %}" class="nav__link link">Мои подписки</a></li>
-                <li class="nav__item {% if current_page == "favorite" %}nav__item_active {% endif %}"><a href="{% url 'favorite' user.username %}" class="nav__link link">Избранное</a></li>
-                <li class="nav__item {% if current_page == "shoppinglist" %}nav__item_active {% endif %}"><a href="{% url 'shopping-list'%}" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter">{{ shoplist|length }}</span></li>
+                <li class="nav__item {% if current_page == "new_recipe" %}nav__item_active {% endif %}"><a href="{% url 'new_recipe' %}" class="nav__link link">Создать рецепт</a></li>
+                <li class="nav__item {% if current_page == "subscription" %}nav__item_active {% endif %}"><a href="{% url 'subscription' %}" class="nav__link link">Мои подписки</a></li>
+                <li class="nav__item {% if current_page == "favorite" %}nav__item_active {% endif %}"><a href="{% url 'favorite' %}" class="nav__link link">Избранное</a></li>
+                <li class="nav__item {% if current_page == "shopping_list" %}nav__item_active {% endif %}"><a href="{% url 'shopping_list'%}" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter">{{ shoplist|length }}</span></li>
             {% else %}
                 <li class="nav__item {% if current_page == "index" %}nav__item_active {% else %}nav__item_disabled{% endif %}"><a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
             {% endif %}
