@@ -40,11 +40,23 @@ def new_recipe(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     ingredients = get_ingredients(request)
 
+    # if not ingredients:
+    #     form.add_error(
+    #         None, 'В рецепте должен быть хотя бы один ингредиент')
+
     if form.is_valid():
         recipe = form.save(commit=False)
         recipe.author = request.user
         recipe.save()
-        create_ingridients(ingredients, recipe)
+        for title, amount in ingredients.items():
+            ingredient = Ingredient.objects.get(title=title)
+            units = IngredientValue(
+                amount=amount,
+                ingredient=ingredient,
+                recipe=recipe)
+            units.save()
+
+        # create_ingridients(ingredients, recipe)
         form.save_m2m()
 
         return redirect('index')

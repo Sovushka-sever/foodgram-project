@@ -129,15 +129,18 @@ class ShoppingList(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='user_shopping_list'
+        related_name='user_shopping_list',
+        verbose_name='Автор',
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='recipe_shopping_list'
+        related_name='recipe_shopping_list',
+        verbose_name='Список покупок',
     )
 
     class Meta:
+        unique_together = ('user', 'recipe',)
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Список покупок'
 
@@ -147,12 +150,14 @@ class Subscription(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='follower',
+        verbose_name='Подписчик',
         null=True,
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='following',
+        verbose_name='Автор',
         null=True,
     )
 
@@ -169,12 +174,14 @@ class Favorite(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='favorites',
+        related_name='author_favorites',
+        verbose_name='Автор'
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
         related_name='favorites',
+        verbose_name='Избранные рецепты',
     )
     created = models.DateTimeField(
         verbose_name='Дата подписки',
@@ -184,6 +191,7 @@ class Favorite(models.Model):
 
     class Meta:
         ordering = ('-created',)
+        unique_together = ('user', 'recipe',)
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранное'
 

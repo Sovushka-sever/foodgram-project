@@ -96,6 +96,7 @@ const cbEventInput = (elem) => {
     })
 };
 
+
 const eventInput = debouncing(cbEventInput, 1000);
 
 // вешаем апи

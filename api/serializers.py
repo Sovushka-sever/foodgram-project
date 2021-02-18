@@ -19,7 +19,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
-        fields = 'id'
+        fields = ('id', )
 
     def validate(self, attrs):
         author_id = attrs.get('id')
@@ -45,7 +45,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Favorite
-        fields = 'id'
+        fields = ('id', )
 
     def validate(self, attrs):
         recipe_id = attrs.get('id')
@@ -66,8 +66,9 @@ class ShoppingListSerializer(serializers.Serializer):
     id = serializers.IntegerField()
 
     def create(self, validated_data):
-        recipe_id = validated_data.get('id')
-        request = validated_data.get('request')
-        shoppinglist = ShoppingList(request)
-        shoppinglist.add(recipe_id)
-        return shoppinglist
+        pass
+        # recipe_id = validated_data.get('id')
+        # request = validated_data.get('request')
+        # shoppinglist = ShoppingList(request)
+        # shoppinglist.add(recipe_id)
+        # return shoppinglist
