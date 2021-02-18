@@ -40,10 +40,6 @@ def new_recipe(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     ingredients = get_ingredients(request)
 
-    # if not ingredients:
-    #     form.add_error(
-    #         None, 'В рецепте должен быть хотя бы один ингредиент')
-
     if form.is_valid():
         recipe = form.save(commit=False)
         recipe.author = request.user

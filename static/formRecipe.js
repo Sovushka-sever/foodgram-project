@@ -96,6 +96,12 @@ const cbEventInput = (elem) => {
     })
 };
 
+const fileInput = document.querySelector('#id_image');
+const fileName = document.querySelector('#file_name');
+function getFileName() {
+  fileName.textContent = fileInput.value.replace(/\\/g, '/').split('/').pop();
+}
+fileInput.addEventListener('change', getFileName);
 
 const eventInput = debouncing(cbEventInput, 1000);
 

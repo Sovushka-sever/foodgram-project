@@ -73,10 +73,6 @@ class Recipe(models.Model):
         through='IngredientValue',
         verbose_name='Ингридиенты',
     )
-    # tags = models.CharField(
-    #     max_length=10,
-    #     choices=Tag_recipes.choices,
-    # )
     tags = models.ManyToManyField(Tag)
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name='Время приготовления',
