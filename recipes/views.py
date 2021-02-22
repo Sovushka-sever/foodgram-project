@@ -51,10 +51,6 @@ def new_recipe(request):
                 ingredient=ingredient,
                 recipe=recipe)
             units.save()
-
-        # create_ingridients(ingredients, recipe)
-        form.save_m2m()
-
         return redirect('index')
 
     return render(
@@ -84,8 +80,13 @@ def recipe_edit(request, username, recipe_id):
         recipe = form.save(commit=False)
         recipe.author = request.user
         recipe.save()
-        create_ingridients(ingredients, recipe)
-        form.save_m2m()
+        for title, amount in ingredients.items():
+            ingredient = Ingredient.objects.get(title=title)
+            units = IngredientValue(
+                amount=amount,
+                ingredient=ingredient,
+                recipe=recipe)
+            units.save()
         return redirect('recipe', username=username, recipe_id=recipe_id, )
 
     return render(
