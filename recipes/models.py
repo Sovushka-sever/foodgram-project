@@ -4,7 +4,7 @@ from django.db import models
 User = get_user_model()
 
 #
-# class Tag_recipes(models.TextChoices):
+# class Tags(models.TextChoices):
 #     BREAKFAST = 'breakfast', 'Завтрак'
 #     LUNCH = 'lunch', 'Обед'
 #     DINNER = 'dinner', 'Ужин'

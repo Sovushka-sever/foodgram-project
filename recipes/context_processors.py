@@ -2,6 +2,10 @@ from .models import ShoppingList, Tag
 
 
 def counter(request):
+    """
+    Вывод количества рецептов в корзине
+    """
+
     if request.user.is_authenticated:
         count = ShoppingList.objects.filter(user__username=request.user).count()
     else:

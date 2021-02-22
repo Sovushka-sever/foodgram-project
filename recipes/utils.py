@@ -1,16 +1,11 @@
-from django.http import HttpResponse
-
-from .models import Ingredient, IngredientValue
 import csv
 from django.http import HttpResponse
 
 
 def get_ingredients(request):
-    # ingredients = []
-    # for ingredient in recipe.ingredients.all():
-    #     amount = ingredient.ingredient_values.get(recipe=recipe)
-    #     ingredients.append((ingredient.title, amount, ingredient.dimension))
-    # return ingredients
+    """
+    Получение ингредиентов из формы создания/редактирования рецепта
+    """
 
     ingredients = {}
     for key in request.POST:
@@ -18,20 +13,6 @@ def get_ingredients(request):
             value = key[15:]
             ingredients[request.POST[key]] = request.POST['valueIngredient_' + value]
     return ingredients
-
-
-def create_ingridients(ingredients, recipe):
-    for key, value in ingredients.items():
-        arg = key.split("_")
-        if arg[0] == 'nameIngredient':
-            title = value
-        if arg[0] == 'valueIngredient':
-            ingredient, _ = Ingredient.objects.get_or_create(
-                title=title, defaults={'dimension': 'шт'}
-            )
-            IngredientValue.objects.update_or_create(
-                ingredient=ingredient, recipe=recipe, defaults={'amount': value}
-            )
 
 
 class ExportCsvMixin:

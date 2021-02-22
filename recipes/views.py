@@ -13,10 +13,11 @@ from .models import (
 )
 from django.core.paginator import Paginator
 import csv
-from .utils import get_ingredients, create_ingridients
+from .utils import get_ingredients
 
 
 def index(request):
+    """Главная страница"""
     tags_slug = request.GET.getlist('filters')
     recipe_list = Recipe.objects.all()
 
@@ -37,6 +38,7 @@ def index(request):
 
 
 def new_recipe(request):
+    """Создание рецепта"""
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     ingredients = get_ingredients(request)
 
@@ -62,6 +64,7 @@ def new_recipe(request):
 
 
 def recipe_edit(request, username, recipe_id):
+    """Редактирование рецепта"""
     recipe = get_object_or_404(
         Recipe,
         id=recipe_id,
@@ -99,6 +102,7 @@ def recipe_edit(request, username, recipe_id):
 
 
 def recipe_delete(request, recipe_id, username):
+    """Удаление рецепта"""
     recipe = get_object_or_404(Recipe, id=recipe_id)
     author = get_object_or_404(User, username=username)
 
@@ -108,6 +112,7 @@ def recipe_delete(request, recipe_id, username):
 
 
 def recipe_view(request, recipe_id, username):
+    """Отображение рецепта"""
     recipe = get_object_or_404(Recipe, id=recipe_id)
     profile = get_object_or_404(User, username=username)
 
@@ -121,6 +126,7 @@ def recipe_view(request, recipe_id, username):
 
 
 def profile(request, username):
+    """Профиль пользователя"""
     username = get_object_or_404(User, username=username)
     tag = request.GET.getlist('filters')
     recipes = Recipe.objects.filter(author=username). \
@@ -160,6 +166,7 @@ def profile(request, username):
 
 
 def favorite(request):
+    """Просмотр избранных рецептов"""
     tag = request.GET.getlist('filters')
     recipe_list = Recipe.objects.filter(
         favorites__user__id=request.user.id).all()
@@ -180,6 +187,7 @@ def favorite(request):
 
 
 def subscription(request):
+    """Просмотр избранных авторов"""
     author_list = Subscription.objects.filter(
          user__id=request.user.id).all()
 
@@ -197,6 +205,7 @@ def subscription(request):
 
 
 def shopping_list(request):
+    """Просмотр списка покупок"""
     shopping_list_user = ShoppingList.objects.filter(user=request.user).all()
     return render(
         request,
@@ -206,8 +215,9 @@ def shopping_list(request):
 
 
 def download_list(request):
+    """Скачивание списка покупок"""
     recipes = Recipe.objects.filter(recipe_shopping_list__user=request.user)
-    ingredients = recipes.values(
+    ingredients_list = recipes.values(
         'ingredients__title',
         'ingredients__dimension'
     ).annotate(
@@ -215,7 +225,7 @@ def download_list(request):
     )
     file_data = ''
 
-    for item in ingredients:
+    for item in ingredients_list:
         line = ' '.join(str(value) for value in item.values())
         file_data += line + '\n'
 
