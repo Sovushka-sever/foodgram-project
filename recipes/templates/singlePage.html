@@ -26,7 +26,7 @@
 
             {% if user.is_authenticated and user != object.author %}
             <div class="single-card__favorite">
-                {% if is_favorite %}
+                {% if recipe|is_favorite:user %}
                 <button class="button button_style_none" name="favorites"><span
                         class="icon-favorite icon-favorite_big icon-favorite_active"></span></button>
                 <div class="single-card__favorite-tooltip tooltip">Убрать из избранного</div>
@@ -100,7 +100,7 @@
     </div>
 </div>
 
-{% endblock content%}
+{% endblock content %}
 
 {% block connect_js %}
 

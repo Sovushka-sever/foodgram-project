@@ -21,4 +21,3 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('<str:username>/', include(user_patterns)),
 ]
-

@@ -3,14 +3,6 @@ from django.db import models
 
 User = get_user_model()
 
-#
-# class Tags(models.TextChoices):
-#     BREAKFAST = 'breakfast', 'Завтрак'
-#     LUNCH = 'lunch', 'Обед'
-#     DINNER = 'dinner', 'Ужин'
-#
-#
-
 
 class Tag(models.Model):
     name = models.CharField(max_length=200)

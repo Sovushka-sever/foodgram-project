@@ -1,20 +1,20 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.contrib.auth.models import User
 from rest_framework.generics import (
-    CreateAPIView,
-    DestroyAPIView,
     ListAPIView,
     get_object_or_404,
 )
 from django.views import View
 from rest_framework.utils import json
-from rest_framework.response import Response
-from recipes.models import Ingredient, Subscription, Favorite, Recipe, ShoppingList
-from .serializers import (
-    IngredientSerializer,
+from recipes.models import (
+    Ingredient,
+    Subscription,
+    Favorite,
+    Recipe,
+    ShoppingList
 )
+from .serializers import IngredientSerializer
 
 User = get_user_model()
 

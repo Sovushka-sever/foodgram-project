@@ -7,10 +7,11 @@
 {% block title %} Мои подписки {% endblock title %}
 
 {% block stylesheet %}
-<link rel="stylesheet" href={% static '/pages/myFollow.css' %}>
+<link rel="stylesheet" href="{% static '/pages/myFollow.css' %}">
 {% endblock stylesheet %}
 
 {% block content %}
+
 <div class="main__header">
     <h1 class="main__title"> Мои подписки </h1>
 </div>
@@ -25,7 +26,8 @@
         </div>
 
         <div class="card-user__body">
-            {% for recipe in item.author.recipes.all|slice:":3" %}
+            {% with item.author.author_recipe.all as recipes %}
+            {% for recipe in recipes|slice:":3" %}
             <ul class="card-user__items">
                 <li class="card-user__item">
                     <div class="recipe">
@@ -40,17 +42,17 @@
                     </div>
                 </li>
                 {% endfor %}
-                {% if item.author.recipes.all|length > 3 %}
+                {% if recipes|length > 3 %}
                 <li class="card-user__item">
-                    <a href="{% url 'profile' item.author.username %}" class="card-user__link link">Еще {{
-                        item.author.recipes.all|length|add:"-3" }} рецепт{{ item.author.recipes.all|length|add:"-3"|plural_recipe }}...</a>
+                    <a href="{% url 'profile' item.author.username %}" class="card-user__link link">Еще {{ recipes|length|add:"-3" }} рецепт{{ recipes|length|add:"-3"|plural_recipe }}...</a>
                 </li>
-                {% endif %}
+            {% endif %}
             </ul>
         </div>
         <div class="card-user__footer">
             <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться от автора</button>
         </div>
+        {% endwith %}
     </div>
     {% empty %}
     <p>Вы пока ни на кого не подписались</p>
@@ -58,7 +60,7 @@
 </div>
 
 {% if page.has_other_pages %}
-{% include "includes/paginator.html" with items=page_item paginator=paginator %}
+{% include "includes/paginator.html" with items=page paginator=paginator %}
 {% endif %}
 
 {% endblock content %}

@@ -8,7 +8,6 @@ from .models import (
     Favorite,
     Tag,
 )
-from .utils import ExportCsvMixin
 
 
 class IngredientValueInline(admin.StackedInline):
@@ -32,9 +31,8 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 @admin.register(Tag)
-class TagAdmin(admin.ModelAdmin, ExportCsvMixin):
+class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug')
-    actions = ['export_as_csv']
 
 
 @admin.register(Ingredient)
