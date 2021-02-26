@@ -1,0 +1,12 @@
+.gitignore
+db.sqlite
+
+Dockerfile
+docker-compose.yaml
+
+LICENSE
+pytest.ini
+
+venv
+nginx_templates
+tests
