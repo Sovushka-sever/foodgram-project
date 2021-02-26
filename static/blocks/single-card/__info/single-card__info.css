@@ -1,0 +1,8 @@
+.single-card__info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 60px;
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
