@@ -54,4 +54,4 @@ docker-compose run web python manage.py createsuperuser
 * **Sovushka-sever** 
 
 ## Лицензия
-Этот проект находится под лицензией Apache License 2.0. Подробности в файле  [LICENSE](https://github.com/Sovushka-sever/)
+Этот проект находится под лицензией Apache License 2.0. Подробности в файле  [LICENSE](https://github.com/Sovushka-sever/foodgram-project/blob/master/LICENSE)
