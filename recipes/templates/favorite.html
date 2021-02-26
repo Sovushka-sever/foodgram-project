@@ -15,6 +15,7 @@
     <h1 class="main__title">Избранное</h1>
 
     {% include "includes/tags.html" with page="favorite" %}
+
 </div>
 <div class="card-list">
     {% for recipe in page %}
@@ -26,7 +27,7 @@
 
 </div>
 {% if page_obj.has_other_pages %}
-{% include "includes/paginator.html" with items=page_obj paginator=paginator filters=filters%}
+{% include "includes/paginator.html" with items=page_obj paginator=paginator %}
 {% endif %}
 
 {% endblock content %}

@@ -5,7 +5,10 @@ User = get_user_model()
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(
+        max_length=200,
+        verbose_name='Название',
+    )
     slug = models.SlugField(
         unique=True,
         max_length=100,
@@ -13,6 +16,7 @@ class Tag(models.Model):
         null=True
     )
     color = models.CharField(
+        verbose_name='Цвет',
         max_length=15,
         blank=True,
         null=True

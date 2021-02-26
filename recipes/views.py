@@ -18,6 +18,7 @@ from .utils import get_ingredients
 
 def index(request):
     """Главная страница"""
+
     tags_slug = request.GET.getlist('filters')
     recipe_list = Recipe.objects.all()
 
@@ -39,12 +40,14 @@ def index(request):
 
 def new_recipe(request):
     """Создание рецепта"""
+
+    user = User.objects.get(username=request.user)
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     ingredients = get_ingredients(request)
 
     if form.is_valid():
         recipe = form.save(commit=False)
-        recipe.author = request.user
+        recipe.author = user
         recipe.save()
         for title, amount in ingredients.items():
             ingredient = Ingredient.objects.get(title=title)
@@ -53,6 +56,7 @@ def new_recipe(request):
                 ingredient=ingredient,
                 recipe=recipe)
             units.save()
+        form.save_m2m()
         return redirect('index')
 
     return render(
@@ -65,6 +69,7 @@ def new_recipe(request):
 
 def recipe_edit(request, username, recipe_id):
     """Редактирование рецепта"""
+
     recipe = get_object_or_404(
         Recipe,
         id=recipe_id,
@@ -90,6 +95,7 @@ def recipe_edit(request, username, recipe_id):
                 ingredient=ingredient,
                 recipe=recipe)
             units.save()
+        form.save_m2m()
         return redirect('recipe', username=username, recipe_id=recipe_id, )
 
     return render(
@@ -103,6 +109,7 @@ def recipe_edit(request, username, recipe_id):
 
 def recipe_delete(request, recipe_id, username):
     """Удаление рецепта"""
+
     recipe = get_object_or_404(Recipe, id=recipe_id)
     author = get_object_or_404(User, username=username)
 
@@ -113,6 +120,7 @@ def recipe_delete(request, recipe_id, username):
 
 def recipe_view(request, recipe_id, username):
     """Отображение рецепта"""
+
     recipe = get_object_or_404(Recipe, id=recipe_id)
     profile = get_object_or_404(User, username=username)
 
@@ -127,6 +135,7 @@ def recipe_view(request, recipe_id, username):
 
 def profile(request, username):
     """Профиль пользователя"""
+
     username = get_object_or_404(User, username=username)
     tag = request.GET.getlist('filters')
     recipes = Recipe.objects.filter(author=username). \
@@ -167,6 +176,7 @@ def profile(request, username):
 
 def favorite(request):
     """Просмотр избранных рецептов"""
+
     tag = request.GET.getlist('filters')
     recipe_list = Recipe.objects.filter(
         favorites__user__id=request.user.id).all()
@@ -188,6 +198,7 @@ def favorite(request):
 
 def subscription(request):
     """Просмотр избранных авторов"""
+
     author_list = Subscription.objects.filter(
          user__id=request.user.id).all()
 
@@ -206,6 +217,7 @@ def subscription(request):
 
 def shopping_list(request):
     """Просмотр списка покупок"""
+
     shopping_list_user = ShoppingList.objects.filter(user=request.user).all()
     return render(
         request,
@@ -216,31 +228,31 @@ def shopping_list(request):
 
 def download_list(request):
     """Скачивание списка покупок"""
-    recipes = Recipe.objects.filter(recipe_shopping_list__user=request.user)
-    ingredients_list = recipes.values(
-        'ingredients__title',
-        'ingredients__dimension'
-    ).annotate(
-        total_amount=Sum('recipe_ingredients__amount')
-    )
-    file_data = ''
 
-    for item in ingredients_list:
-        line = ' '.join(str(value) for value in item.values())
-        file_data += line + '\n'
+    shopping_list = ShoppingList.objects.filter(user=request.user).all()
+    ingredients_dict = {}
+
+    for item in shopping_list:
+
+        for unit in item.recipe.recipe_ingredients.all():
+
+            title = f'{unit.ingredient.title} {unit.ingredient.dimension}'
+            amount = unit.amount
+
+            if title in ingredients_dict.keys():
+                ingredients_dict[title] += amount
+            else:
+                ingredients_dict[title] = amount
+
+    ingredients_list = []
+
+    for key, value in ingredients_dict.items():
+        ingredients_list.append(f'{key} - {value}, ' + '\n')
 
     response = HttpResponse(
-        file_data,
+        ingredients_list,
         content_type='application/text charset=utf-8'
     )
     response['Content-Disposition'] = 'attachment; filename="ShoppingList.txt"'
     return response
 
-
-def add_recipe(request):
-    with open('ingredients.csv', encoding='utf-8') as file:
-        r_file = csv.reader(file, delimiter=',')
-
-        for i in r_file:
-            Ingredient.objects.create(title=i[0], dimension=i[1])
-        return redirect('index')

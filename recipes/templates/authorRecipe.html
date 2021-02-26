@@ -16,16 +16,18 @@
 <div class="main__header">
     <h1 class="main__title">
 
-        {% if author.first_name %}
+        {% if username.first_name %}
         Рецепты автора: {{ username.get_full_name }}
         {% else %}
-        Рецепты автора: {{ user.username }}
+        Рецепты автора: {{ username.username }}
         {% endif %}
 
+
+
     </h1>
+    {% include "includes/tags.html" with page="authorRecipe" %}
 </div>
 
-{% include "includes/tags.html" with page="authorRecipe" %}
 
 {% if user != username and user.is_authenticated %}
 

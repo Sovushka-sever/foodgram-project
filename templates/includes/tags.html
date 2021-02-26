@@ -4,12 +4,14 @@
     {% for tag in all_tags %}
 
     {% if page == "authorRecipe" %}
-            <a
-                    id="{{ tag.slug }}"
-                    class="tags__checkbox tags__checkbox_style_{{ tag.color }}
+    <li class="tags__item">
+        <a
+                id="{{ tag.slug }}"
+                class="tags__checkbox tags__checkbox_style_{{ tag.color }}
                                 {% if tag.slug in request.GET|get_filter_values %} tags__checkbox_active {% endif %}"
-                    href="{% url 'profile' username %}?{{ request|get_filter_link:tag }}"></a>
-            <span class="tags__label">{{ tag.name }}</span>
+                href="{% url 'profile' username %}?{{ request|get_filter_link:tag }}"></a>
+        <span class="tags__label">{{ tag.name }}</span>
+    </li>
     {% endif %}
 
     {% if page == "favorite" %}

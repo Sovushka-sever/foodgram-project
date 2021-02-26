@@ -44,21 +44,27 @@
             <p class="form__label">Теги</p>
             <div class="form__field-group">
                 <div class="tags">
-                    <div class="tags__item">
+
                         {% for tag in all_tags %}
+                    <div class="tags__item">
                         <input
                                 type="checkbox"
                                 name="tags"
                                 value="{{ tag.id }}"
                                 id="id_{{ tag.slug }}"
                                 class="tags__checkbox tags__checkbox_style_{{ tag.color }}"
-                                {% if tag.instance in form.instance.tags.all %} checked {% endif %}>
+                        >
                         <label for="id_{{ tag.slug }}"
                                class="tags__label">{{ tag.name }}</label>
+                        </div>
                         {% endfor %}
-                    </div>
+
                 </div>
-                <span class="form__error">{{ form.non_field_errors.as_text|escape }}</span>
+                {% if form.errors %}
+                    {% for error in form.tags.errors %}
+                        <span class="form__error">{{ error|escape }}</span>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
 

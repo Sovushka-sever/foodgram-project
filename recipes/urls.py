@@ -13,7 +13,6 @@ user_patterns = [
 
 urlpatterns = [
     path('new/', views.new_recipe, name='new_recipe'),
-    path('addrecipe/', views.add_recipe),
     path('favorite/', views.favorite, name='favorite'),
     path('subscription/', views.subscription, name='subscription'),
     path('shopping_list/', views.shopping_list, name='shopping_list'),

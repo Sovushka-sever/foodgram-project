@@ -28,11 +28,14 @@
             {% endfor %}
 
         </div>
-        {% if page.has_other_pages %}
-        {% include "includes/paginator.html" with items=page_obj paginator=paginator filters=filters%}
-        {% endif %}
+
+    {% if page.has_other_pages %}
+        {% include "includes/paginator.html" with items=page paginator=paginator filters=filters%}
+    {% endif %}
+
 
 {% endblock content %}
+
 
 {% block connect_js %}
 
