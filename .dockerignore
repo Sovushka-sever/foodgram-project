@@ -7,6 +7,7 @@ docker-compose.yaml
 LICENSE
 pytest.ini
 
+static
 venv
 nginx_templates
 tests

@@ -18,14 +18,15 @@ volumes:
 services:
   db:
     image: postgres:12.4
-    container_name: postgres
+    container_name: postgres_foodgram
     restart: always
     volumes:
       - postgres_db:/var/lib/postgresql/data/
     env_file:
       - ./.env
-  yamdb:
-    image: sovushkasever/api_yamdb:latest
+  foodgram:
+    image: sovushkasever/foodgram:latest
+    build: .
     restart: always
     depends_on:
       - db
@@ -34,15 +35,15 @@ services:
   nginx:
     restart: always
     image: nginx:1.19
-    container_name: webserver
+    container_name: webserver_foodgram
     volumes:
       - static:/usr/share/nginx/html/static/
       - nginx_templates:/etc/nginx/templates
     ports:
       - "80:80"
     depends_on:
-      - yamdb
+      - foodgram
     environment:
      - NGINX_PORT=80
      - NGINX_SERVERNAME=localhost
-     - NGINX_UPSTREAM=http://yamdb:8000
+     - NGINX_UPSTREAM=http://foodgram:8000

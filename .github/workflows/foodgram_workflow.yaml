@@ -17,17 +17,14 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest
+        pip install flake8
         pip install -r requirements.txt
 
     - name: Lint with flake8
-      run: flake8 . --exclude tests,**/migrations,api_yamdb/settings.py
-
-    - name: Test with pytest
-      run: pytest
+      run: flake8 . --exclude tests,**/migrations,foodgram/settings.py
 
     - name: build static
-      run: mkdir static && python manage.py collectstatic && mv redoc.yaml static/
+      run: python manage.py collectstatic
 
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
@@ -58,7 +55,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: sovushkasever/api_yamdb:latest
+          tags: sovushkasever/foodgram:latest
 
   deploy:
    runs-on: ubuntu-latest

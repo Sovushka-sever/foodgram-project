@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -12,7 +11,6 @@ from .models import (
     IngredientValue,
 )
 from django.core.paginator import Paginator
-import csv
 from .utils import get_ingredients
 
 
@@ -255,4 +253,3 @@ def download_list(request):
     )
     response['Content-Disposition'] = 'attachment; filename="ShoppingList.txt"'
     return response
-
