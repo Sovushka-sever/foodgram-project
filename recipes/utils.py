@@ -14,5 +14,3 @@ def get_ingredients(request):
             'valueIngredient_' + value
         ]
     return ingredients
-
-
