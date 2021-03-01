@@ -1,15 +1,30 @@
 {% extends "base.html" %}
-{% block title %} Ошибка 500 {% endblock %}
+{% load static %}
+{% block title %} Ошибка 500 {% endblock title %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static '/pages/index.css' %}">
+{% endblock stylesheet %}
+
 {% block content %}
 
-    <main role="main" class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Ошибка 500</h1>
-                <p class="lead">Ошибка на сервере, попробуйте обновить страницу или обратиться позже</p>
-                <p class="lead"><a href="{% url 'index' %}">Вернуться на главную</a></p>
-            </div>
-        </div>
-    </main>
+    <h1>Ошибка 500</h1>
+    <p>Ошибка на сервере, попробуйте обновить страницу или обратиться позже</p>
+    <p><a href="{% url 'index' %}">Вернуться на главную</a></p>
 
-{% endblock %}
+
+{% endblock content %}
+
+{% block connect_js %}
+
+    {% if user.is_authenticated %}
+
+        {% include "includes/connect_js.html" with page="indexAuth" %}
+
+    {% else %}
+
+        {% include "includes/connect_js.html" with page="indexNotAuth" %}
+
+    {% endif %}
+
+{% endblock connect_js %}

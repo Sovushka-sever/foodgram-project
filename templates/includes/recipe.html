@@ -1,6 +1,6 @@
 {% load templates_filters %}
 
-<div class="card" data-id="{{recipe.id}}">
+<div class="card" data-id="{{ recipe.id }}">
 
     <a href="{% url 'recipe' recipe.author.username recipe.id %}" class="link" target="_blank"><img
             src="{{ recipe.image.url }}" alt="Какой-то текст" class="card__image"></a>
@@ -9,19 +9,28 @@
            href="{% url 'recipe' recipe.author.username recipe.id %}"
            target="_blank">{{ recipe.name }}</a>
         <ul class="card__items">
+
             {% for tag in recipe.tags.all %}
-            <li class="card__item"><span class="badge badge_style_{{ tag.color }}">{{ tag.name }}</span></li>
+
+                <li class="card__item"><span class="badge badge_style_{{ tag.color }}">{{ tag.name }}</span></li>
+
             {% endfor %}
+
         </ul>
         <div class="card__items card__items_column">
             <p class="card__text"><span class="icon-time"></span> {{ recipe.cooking_time }} мин.</p>
             <p class="card__text"><span class="icon-user"></span> <a
                     href="{% url 'profile' recipe.author.username %}"
                     style="color: black">
+
                 {% if recipe.author.first_name %}
-                Рецепты автора: {{ recipe.author.get_full_name }}
+
+                    Рецепты автора: {{ recipe.author.get_full_name }}
+
                 {% else %}
-                Рецепты автора: {{ recipe.author.username }}
+
+                    Рецепты автора: {{ recipe.author.username }}
+
                 {% endif %}
             </a></p>
         </div>
@@ -31,12 +40,19 @@
         {% include 'includes/store_button.html' %}
 
         {% if user.is_authenticated and user != object.author %}
-        {% if recipe|is_favorite:user %}
-        <button class="button button_style_none" name="favorites"><span
-                class="icon-favorite icon-favorite_active"></span></button>
-        {% else %}
-        <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite"></span></button>
-        {% endif %}
+
+            {% if recipe|is_favorite:user %}
+
+                <button class="button button_style_none" name="favorites"><span
+                        class="icon-favorite icon-favorite_active"></span></button>
+
+            {% else %}
+
+                <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite"></span>
+                </button>
+
+            {% endif %}
+
         {% endif %}
 
     </div>

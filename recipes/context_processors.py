@@ -12,6 +12,7 @@ def counter(request):
         ).count()
     else:
         count = None
+
     return {'count': count}
 
 
@@ -20,8 +21,7 @@ def all_tags(request):
     Вывод всех тегов
     """
 
-    tags = Tag.objects.all()
-    return {'all_tags': tags}
+    return {'all_tags': Tag.objects.all()}
 
 
 def filter_in_url(request):

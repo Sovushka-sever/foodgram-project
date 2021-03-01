@@ -1,31 +1,36 @@
 <!doctype html>
 {% load static %}
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <title>{% block title %}{% endblock title %}</title>
-        {% block stylesheet %}{% endblock stylesheet %}
+<head>
 
-    </head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <body class="body">
-        {% include 'includes/nav.html' %}
+    <title>{% block title %}{% endblock title %}</title>
 
-        {# csrf_token to send POST and DELETE requests to the API via JS #}
-        {% csrf_token %}
-        <main class="main container">
-                {% block content %}
-                {% endblock content %}
-        </main>
+    {% block stylesheet %}{% endblock stylesheet %}
 
-        {% include 'includes/footer.html' %}
+</head>
 
-        {% block connect_js %}
-        {% endblock connect_js %}
-    </body>
+<body class="body">
+
+{% include 'includes/nav.html' %}
+
+{# csrf_token to send POST and DELETE requests to the API via JS #}
+{% csrf_token %}
+<main class="main container">
+    {% block content %}
+    {% endblock content %}
+</main>
+
+{% include 'includes/footer.html' %}
+
+{% block connect_js %}
+{% endblock connect_js %}
+
+</body>
 
 </html>

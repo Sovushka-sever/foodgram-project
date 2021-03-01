@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Об авторе {% endblock title %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static '/pages/index.css' %}">
+{% endblock stylesheet %}
+
+
+{% block content %}
+
+    <div class="main__header">
+        <h1 class="main__title">Об авторе</h1>
+    </div>
+
+    <div class="container">
+
+        <h4 lang="ru-RU" class="western">
+            <span style="color: #000000;">
+                <span
+                        style="font-family: Liberation Serif, serif;">
+                    <span style="font-size: large;">Добрый день!</span>
+        </span>
+        </span>
+        </h4>
+        <p align="left"><span style="font-family: Liberation Serif, serif;">
+            <span style="font-size: large;">Меня зовут Елена.&nbsp;</span>
+        </span>
+        </p>
+        <p align="left"><span style="font-family: Liberation Serif, serif;"><span style="font-size: large;"><br/>Сфера
+            IT вызвала большой интерес после Ростовской конференцией South DevFest 2018, на которую я пошла за компанию.
+            Было так круто видеть, столько увлеченных своим делом людей.</span></span>
+        </p>
+        <p align="left"><span style="font-family: Liberation Serif, serif;"><span style="font-size: large;">В итоге,
+            закончила курс Python-разработчика в Яндекс.Практикуме.
+            Где поучаствовала в своем первом мини-хакатоне среди студентов Яндекса.</span></span>
+        </p>
+        <p align="left"><span style="font-family: Liberation Serif, serif;"><span style="font-size: large;">Считаю <span
+                lang="ru-RU">процесс разработки</span> очень творческим и увлекательным)</span></span></p>
+        <p><a href="https://github.com/Sovushka-sever">мой GitHub</a></p>
+    </div>
+
+{% endblock content %}
+
+{% block connect_js %}
+
+    {% if user.is_authenticated %}
+
+        {% include "includes/connect_js.html" with page="indexAuth" %}
+
+    {% else %}
+
+        {% include "includes/connect_js.html" with page="indexNotAuth" %}
+
+    {% endif %}
+
+{% endblock connect_js %}

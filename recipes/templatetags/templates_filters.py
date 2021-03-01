@@ -47,6 +47,10 @@ def get_filter_link(request, tag):
 
 @register.filter(name='plural_recipe')
 def plural_recipe(number):
+    """
+    Фильтр для корректного отображения рецепта во множественном числе
+    """
+
     if number % 10 == 1 and number not in (11, 111):
         ending = ''
     elif 1 < number % 10 < 5 and number not in (12, 13, 14, 112, 113, 114):

@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "*",
@@ -151,8 +151,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
@@ -160,11 +158,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 LOGIN_URL = "/auth/login/"
 LOGIN_REDIRECT_URL = "index"
 LOGOUT_REDIRECT_URL = "index"
-
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.AnonymousUser',
-#     ]
-# }
 
 SITE_ID = 1

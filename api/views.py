@@ -24,10 +24,10 @@ class IngredientListAPIView(ListAPIView):
 
     def get_queryset(self):
         queryset = Ingredient.objects.all()
-        query = self.request.query_params.get('query', None)
+        query = self.request.query_params.get('query')
 
-        if query is not None:
-            queryset = queryset.filter(title__icontains=query)
+        if query:
+            return queryset.filter(title__icontains=query)
 
         return queryset
 
@@ -37,17 +37,16 @@ class Favorites(LoginRequiredMixin, View):
     def post(self, request):
         req_ = json.loads(request.body)
         recipe_id = req_.get('id', None)
-        if recipe_id is not None:
-            recipe = get_object_or_404(Recipe, id=recipe_id)
-            obj, created = Favorite.objects.get_or_create(
-                user=request.user,
-                recipe=recipe
-            )
 
-            if created:
-                return JsonResponse({'success': True})
-            return JsonResponse({'success': False})
-        return JsonResponse({'success': False}, status=400)
+        if recipe_id is None:
+            return JsonResponse({'success': False}, status=400)
+
+        recipe = get_object_or_404(Recipe, id=recipe_id)
+        obj, created = Favorite.objects.get_or_create(
+            user=request.user,
+            recipe=recipe
+        )
+        return JsonResponse({'success': True})
 
     def delete(self, request, recipe_id):
         recipe = get_object_or_404(
@@ -64,17 +63,16 @@ class Subscribe(LoginRequiredMixin, View):
     def post(self, request):
         req_ = json.loads(request.body)
         author_id = req_.get('id', None)
-        if author_id is not None:
-            author = get_object_or_404(User, id=author_id)
-            obj, created = Subscription.objects.get_or_create(
-                user=request.user,
-                author=author
-            )
 
-            if created:
-                return JsonResponse({'success': True})
-            return JsonResponse({'success': False})
-        return JsonResponse({'success': False}, status=400)
+        if author_id is None:
+            return JsonResponse({'success': False}, status=400)
+
+        author = get_object_or_404(User, id=author_id)
+        obj, created = Subscription.objects.get_or_create(
+            user=request.user,
+            author=author
+        )
+        return JsonResponse({'success': True})
 
     def delete(self, request, author_id):
         subscription = get_object_or_404(

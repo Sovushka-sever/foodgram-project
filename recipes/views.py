@@ -15,7 +15,7 @@ from .utils import get_ingredients
 
 
 def index(request):
-    """Главная страница"""
+    """Главная страница '/index' """
 
     tags_slug = request.GET.getlist('filters')
     recipe_list = Recipe.objects.all()
@@ -37,36 +37,38 @@ def index(request):
 
 
 def new_recipe(request):
-    """Создание рецепта"""
+    """Создание рецепта '/new' """
 
     user = User.objects.get(username=request.user)
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     ingredients = get_ingredients(request)
 
-    if form.is_valid():
-        recipe = form.save(commit=False)
-        recipe.author = user
-        recipe.save()
-        for title, amount in ingredients.items():
-            ingredient = Ingredient.objects.get(title=title)
-            units = IngredientValue(
-                amount=amount,
-                ingredient=ingredient,
-                recipe=recipe)
-            units.save()
-        form.save_m2m()
-        return redirect('index')
+    if not form.is_valid():
+        return render(
+            request,
+            'new_recipe.html',
+            {'is_edit': False,
+             'form': form, }
+        )
 
-    return render(
-        request,
-        'new_recipe.html',
-        {'is_edit': False,
-         'form': form, }
-    )
+    recipe = form.save(commit=False)
+    recipe.author = user
+    recipe.save()
+
+    for title, amount in ingredients.items():
+        ingredient = Ingredient.objects.get(title=title)
+        units = IngredientValue(
+            amount=amount,
+            ingredient=ingredient,
+            recipe=recipe)
+        units.save()
+    form.save_m2m()
+
+    return redirect('index')
 
 
 def recipe_edit(request, username, recipe_id):
-    """Редактирование рецепта"""
+    """Редактирование рецепта """
 
     recipe = get_object_or_404(
         Recipe,
@@ -81,27 +83,33 @@ def recipe_edit(request, username, recipe_id):
     )
     ingredients = get_ingredients(request)
 
-    if form.is_valid():
-        IngredientValue.objects.filter(recipe=recipe).delete()
-        recipe = form.save(commit=False)
-        recipe.author = request.user
-        recipe.save()
-        for title, amount in ingredients.items():
-            ingredient = Ingredient.objects.get(title=title)
-            units = IngredientValue(
-                amount=amount,
-                ingredient=ingredient,
-                recipe=recipe)
-            units.save()
-        form.save_m2m()
-        return redirect('recipe', username=username, recipe_id=recipe_id, )
+    if not form.is_valid():
+        return render(
+            request,
+            'new_recipe.html',
+            {'is_edit': True,
+             'form': form,
+             'recipe': recipe, }
+        )
 
-    return render(
-        request,
-        'new_recipe.html',
-        {'is_edit': True,
-         'form': form,
-         'recipe': recipe, }
+    IngredientValue.objects.filter(recipe=recipe).delete()
+    recipe = form.save(commit=False)
+    recipe.author = request.user
+    recipe.save()
+
+    for title, amount in ingredients.items():
+        ingredient = Ingredient.objects.get(title=title)
+        units = IngredientValue(
+            amount=amount,
+            ingredient=ingredient,
+            recipe=recipe)
+        units.save()
+    form.save_m2m()
+
+    return redirect(
+        'recipe',
+        username=username,
+        recipe_id=recipe_id,
     )
 
 
@@ -136,8 +144,9 @@ def profile(request, username):
 
     username = get_object_or_404(User, username=username)
     tag = request.GET.getlist('filters')
-    recipes = Recipe.objects.filter(author=username). \
-        select_related('author').all()
+    recipes = Recipe.objects.filter(
+        author=username
+    ).select_related('author').all()
 
     if tag:
         recipes = recipes.filter(tags__slug__in=tag)
@@ -146,13 +155,14 @@ def profile(request, username):
     page = paginator.get_page(page_number)
 
     if request.user.is_authenticated:
-        following = Subscription.objects.filter(user=request.user). \
-            filter(author=username).select_related('author')
+        following = Subscription.objects.filter(
+            user=request.user
+        ).filter(
+            author=username
+        ).select_related('author')
 
         if not following:
             following = None
-        else:
-            following = True
 
         return render(
             request,
@@ -235,12 +245,11 @@ def download_list(request):
         for unit in item.recipe.recipe_ingredients.all():
 
             title = f'{unit.ingredient.title} {unit.ingredient.dimension}'
-            amount = unit.amount
 
             if title in ingredients_dict.keys():
-                ingredients_dict[title] += amount
+                ingredients_dict[title] += unit.amount
             else:
-                ingredients_dict[title] = amount
+                ingredients_dict[title] = unit.amount
 
     ingredients_list = []
 

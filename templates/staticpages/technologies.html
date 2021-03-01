@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Технологии {% endblock title %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static '/pages/index.css' %}">
+{% endblock stylesheet %}
+
+
+{% block content %}
+
+    <div class="main__header">
+        <h1 class="main__title">Технологии</h1>
+    </div>
+
+    <div class="container">
+
+        <h4 lang="ru-RU" class="western"><span style="color: #000000;"><span
+                style="font-family: Liberation Serif, serif;"><span
+                style="font-size: large;">Добрый день!</span></span></span></h4>
+        <p align="left"><span style="font-family: Liberation Serif, serif; font-size: large;"> В ходе разработки приложения
+            использовались следующие технологии:</span>
+        </p>
+        <pre>
+<span>django</span>==<span>2.2.6<br/></span>
+<span>pillow</span>==<span>7.0.0<br/></span>
+<span>sorl-thumbnail</span>==<span>12.6.3<br/></span>
+<span>Unidecode</span>==<span>1.1.1 <br/></span>
+<span>djangorestframework</span>==<span>3.12.2<br/></span>
+<span>WeasyPrint</span>==<span>52.1<br/></span>
+<span>python-dotenv</span>==<span>0.15.0<br/></span>
+<span>gunicorn</span>==<span>20.0.4<br/></span>
+<span>psycopg2-binary</span>==<span>2.8.5</span>
+        </pre>
+    </div>
+
+{% endblock content %}
+
+{% block connect_js %}
+
+    {% if user.is_authenticated %}
+
+        {% include "includes/connect_js.html" with page="indexAuth" %}
+
+    {% else %}
+
+        {% include "includes/connect_js.html" with page="indexNotAuth" %}
+
+    {% endif %}
+
+{% endblock connect_js %}
