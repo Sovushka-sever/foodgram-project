@@ -9,5 +9,6 @@ pytest.ini
 
 static
 venv
+.venv
 nginx_templates
 tests

@@ -1,7 +1,6 @@
-name: YamdbWorkflow
+name: FoodgramWorkflow
 
 on: [push]
-
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -85,7 +84,7 @@ jobs:
        username: ${{ secrets.USER }}
        key: ${{ secrets.SSH_KEY }}
        script: |
-          sudo docker pull sovushkasever/api_yamdb
+          sudo docker pull sovushkasever/foodgram
           sudo docker-compose up -d --force-recreate
 
   send_message:
