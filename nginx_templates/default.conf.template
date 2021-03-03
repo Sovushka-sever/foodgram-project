@@ -6,6 +6,10 @@ server {
           root /usr/share/nginx/html;
     }
 
+    location /media/ {
+          root /usr/share/nginx/html;
+    }
+
     location / {
           proxy_cache off;
           proxy_buffering off;

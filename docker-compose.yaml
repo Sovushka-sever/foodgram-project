@@ -7,6 +7,12 @@ volumes:
       type: 'none'
       o: 'bind'
       device: './static'
+  media:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: './media'
   nginx_templates:
     driver: local
     driver_opts:
@@ -39,6 +45,7 @@ services:
     volumes:
       - static:/usr/share/nginx/html/static/
       - nginx_templates:/etc/nginx/templates
+      - media:/usr/share/nginx/html/media/
     ports:
       - "80:80"
     depends_on:
