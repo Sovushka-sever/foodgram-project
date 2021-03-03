@@ -13,6 +13,9 @@ from .models import (
 from django.core.paginator import Paginator
 from .utils import get_ingredients
 
+CONTENT_TYPE_SHOP = 'application/text charset=utf-8'
+CONTENT_DISPOSITION_SHOP = 'attachment; filename="ShoppingList.txt"'
+
 
 def index(request):
     """Главная страница '/index' """
@@ -258,7 +261,7 @@ def download_list(request):
 
     response = HttpResponse(
         ingredients_list,
-        content_type='application/text charset=utf-8'
+        content_type=CONTENT_TYPE_SHOP
     )
-    response['Content-Disposition'] = 'attachment; filename="ShoppingList.txt"'
+    response['Content-Disposition'] = CONTENT_DISPOSITION_SHOP
     return response

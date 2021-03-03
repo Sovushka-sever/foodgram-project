@@ -4,6 +4,9 @@ from recipes.models import Favorite, Subscription, ShoppingList
 
 register = template.Library()
 
+EXCLUSION_FOR_ODD_NUMBER = (11, 111)
+EXCLUSION_FOR_EVEN_NUMBER = (12, 13, 14, 112, 113, 114)
+
 
 @register.filter(name='is_follow')
 def is_follow(author, user):
@@ -51,9 +54,9 @@ def plural_recipe(number):
     Фильтр для корректного отображения рецепта во множественном числе
     """
 
-    if number % 10 == 1 and number not in (11, 111):
+    if number % 10 == 1 and number not in EXCLUSION_FOR_ODD_NUMBER:
         ending = ''
-    elif 1 < number % 10 < 5 and number not in (12, 13, 14, 112, 113, 114):
+    elif 1 < number % 10 < 5 and number not in EXCLUSION_FOR_EVEN_NUMBER:
         ending = 'а'
     else:
         ending = 'ов'

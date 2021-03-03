@@ -65,8 +65,7 @@
                     {% if recipes|length > 3 %}
 
                         <li class="card-user__item">
-                            <a href="{% url 'profile' item.author.username %}" class="card-user__link link">Еще {{
-                                    recipes|length|add:"-3" }} рецепт{{ recipes|length|add:"-3"|plural_recipe }}...</a>
+                            <a href="{% url 'profile' item.author.username %}" class="card-user__link link">Еще {{ recipes|length|add:"-3" }} рецепт{{ recipes|length|add:"-3"|plural_recipe }}...</a>
                         </li>
 
                     {% endif %}
