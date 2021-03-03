@@ -1,5 +1,5 @@
 # «Продуктовый помощник»
-![Foodgram status]((https://github.com/Sovushka-sever/foodgram-project/workflows/FoodgramWorkflow/badge.svg))
+[![FoodgramWorkflow](https://github.com/Sovushka-sever/foodgram-project/actions/workflows/foodgram_workflow.yaml/badge.svg)](https://github.com/Sovushka-sever/foodgram-project/actions/workflows/foodgram_workflow.yaml)
 
 Это онлайн-сервис, где пользователи смогут публиковать рецепты, подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
 
