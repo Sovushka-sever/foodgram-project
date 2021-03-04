@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.db.models import Sum
 from .forms import RecipeForm
 from .models import (
     Recipe,
@@ -240,24 +240,18 @@ def shopping_list(request):
 def download_list(request):
     """Скачивание списка покупок"""
 
-    shopping_list = ShoppingList.objects.filter(user=request.user).all()
-    ingredients_dict = {}
+    recipes = Recipe.objects.filter(recipe_shopping_list__user=request.user)
+    ingredients = recipes.values(
+        'ingredients__title',
+        'ingredients__dimension',
+    ).annotate(
+        total_amount=Sum('recipe_ingredients__amount')
+    )
+    ingredients_list = ''
 
-    for item in shopping_list:
-
-        for unit in item.recipe.recipe_ingredients.all():
-
-            title = f'{unit.ingredient.title} {unit.ingredient.dimension}'
-
-            if title in ingredients_dict.keys():
-                ingredients_dict[title] += unit.amount
-            else:
-                ingredients_dict[title] = unit.amount
-
-    ingredients_list = []
-
-    for key, value in ingredients_dict.items():
-        ingredients_list.append(f'{key} - {value}, ' + '\n')
+    for item in ingredients:
+        line = ' '.join(str(value) for value in item.values())
+        ingredients_list += line + '\n'
 
     response = HttpResponse(
         ingredients_list,
