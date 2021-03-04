@@ -10,6 +10,7 @@ from .models import (
     ShoppingList,
     IngredientValue,
 )
+from django.forms import ValidationError
 from django.core.paginator import Paginator
 from .utils import get_ingredients
 
@@ -54,6 +55,20 @@ def new_recipe(request):
              'form': form, }
         )
 
+    if not ingredients:
+        raise ValidationError(
+            message='Добавьте ингредиенты'
+        )
+
+    for title, amount in ingredients.items():
+        ingredient_exist = Ingredient.objects.filter(
+            title=title
+        ).exists()
+        if not ingredient_exist:
+            raise ValidationError(
+                message='Таких ингредиентов не существует'
+            )
+
     recipe = form.save(commit=False)
     recipe.author = user
     recipe.save()
@@ -94,6 +109,20 @@ def recipe_edit(request, username, recipe_id):
              'form': form,
              'recipe': recipe, }
         )
+
+    if not ingredients:
+        raise ValidationError(
+            message='Добавьте ингредиенты'
+        )
+
+    for title, amount in ingredients.items():
+        ingredient_exist = Ingredient.objects.filter(
+            title=title
+        ).exists()
+        if not ingredient_exist:
+            raise ValidationError(
+                message='Таких ингредиентов не существует'
+            )
 
     IngredientValue.objects.filter(recipe=recipe).delete()
     recipe = form.save(commit=False)
@@ -212,7 +241,6 @@ def subscription(request):
 
     author_list = Subscription.objects.filter(
          user__id=request.user.id).all()
-
     paginator = Paginator(author_list, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -229,7 +257,10 @@ def subscription(request):
 def shopping_list(request):
     """Просмотр списка покупок"""
 
-    shopping_list_user = ShoppingList.objects.filter(user=request.user).all()
+    shopping_list_user = ShoppingList.objects.filter(
+        user=request.user
+    ).all()
+
     return render(
         request,
         'shopping_list.html',
@@ -240,7 +271,9 @@ def shopping_list(request):
 def download_list(request):
     """Скачивание списка покупок"""
 
-    recipes = Recipe.objects.filter(recipe_shopping_list__user=request.user)
+    recipes = Recipe.objects.filter(
+        recipe_shopping_list__user=request.user
+    )
     ingredients = recipes.values(
         'ingredients__title',
         'ingredients__dimension',
