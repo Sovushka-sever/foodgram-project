@@ -1,8 +1,8 @@
 server {
     listen        ${NGINX_PORT};
     server_name  ${NGINX_SERVERNAME};
-    ssl_certificate /etc/letsencrypt/live/foodgram-sv.cf/fullchain.pem
-    ssl_certificate_key /etc/letsencrypt/live/foodgram-sv.cf/privkey.pem
+    ssl_certificate /etc/letsencrypt/live/foodgram-sv.cf/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/foodgram-sv.cf/privkey.pem;
 
     location /static/ {
           root /usr/share/nginx/html;
