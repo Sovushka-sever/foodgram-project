@@ -31,6 +31,8 @@ DEBUG = eval(os.environ.get('DEBUG', default='False'))
 ALLOWED_HOSTS = [
     "*",
     "localhost",
+    "foodgram-sv.cf",
+    "www.foodgram-sv.cf"
 ]
 
 
@@ -99,6 +101,7 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT"),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

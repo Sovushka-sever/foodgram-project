@@ -4,7 +4,6 @@
     {% for tag in all_tags %}
 
         {% if page == "authorRecipe" %}
-
             <li class="tags__item">
                 <a
                         id="{{ tag.slug }}"
@@ -13,11 +12,9 @@
                         href="{% url 'profile' username %}?{{ request|get_filter_link:tag }}"></a>
                 <span class="tags__label">{{ tag.name }}</span>
             </li>
-
         {% endif %}
 
         {% if page == "favorite" %}
-
             <li class="tags__item">
                 <a
                         id="{{ tag.slug }}"
@@ -26,11 +23,9 @@
                         href="{% url 'favorite' %}?{{ request|get_filter_link:tag }}"></a>
                 <span class="tags__label">{{ tag.name }}</span>
             </li>
-
         {% endif %}
 
         {% if page == "index" %}
-
             <li class="tags__item">
                 <a
                         id="{{ tags.slug }}"
@@ -39,7 +34,6 @@
                         href="{% url 'index' %}?{{ request|get_filter_link:tag }}"></a>
                 <span class="tags__label">{{ tag.name }}</span>
             </li>
-
         {% endif %}
 
     {% endfor %}

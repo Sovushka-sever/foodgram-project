@@ -10,32 +10,24 @@
 {% endblock stylesheet %}
 
 {% block content %}
+
     {% csrf_token %}
+
     <div class="main__header">
         <h1 class="main__title">Избранное</h1>
-
         {% include "includes/tags.html" with page="favorite" %}
-
     </div>
+
     <div class="card-list">
-
         {% for recipe in page %}
-
             {% include 'includes/recipe.html' %}
-
         {% empty %}
-
             <p>Список избранных рецептов пока пуст </p>
-
         {% endfor %}
-
-
     </div>
 
     {% if page_obj.has_other_pages %}
-
         {% include "includes/paginator.html" with items=page_obj paginator=paginator %}
-
     {% endif %}
 
 {% endblock content %}

@@ -60,20 +60,20 @@ def new_recipe(request):
             message='Добавьте ингредиенты'
         )
 
-    for title, amount in ingredients.items():
-        ingredient_exist = Ingredient.objects.filter(
-            title=title
-        ).exists()
-        if not ingredient_exist:
-            raise ValidationError(
-                message='Таких ингредиентов не существует'
-            )
-
     recipe = form.save(commit=False)
     recipe.author = user
     recipe.save()
 
     for title, amount in ingredients.items():
+
+        ingredient_exist = Ingredient.objects.filter(
+            title=title
+        ).exists()
+
+        if not ingredient_exist:
+            raise ValidationError(
+                message='Таких ингредиентов не существует'
+            )
         ingredient = Ingredient.objects.get(title=title)
         units = IngredientValue(
             amount=amount,
@@ -115,21 +115,21 @@ def recipe_edit(request, username, recipe_id):
             message='Добавьте ингредиенты'
         )
 
-    for title, amount in ingredients.items():
-        ingredient_exist = Ingredient.objects.filter(
-            title=title
-        ).exists()
-        if not ingredient_exist:
-            raise ValidationError(
-                message='Таких ингредиентов не существует'
-            )
-
     IngredientValue.objects.filter(recipe=recipe).delete()
     recipe = form.save(commit=False)
     recipe.author = request.user
     recipe.save()
 
     for title, amount in ingredients.items():
+        ingredient_exist = Ingredient.objects.filter(
+            title=title
+        ).exists()
+
+        if not ingredient_exist:
+            raise ValidationError(
+                message='Таких ингредиентов не существует'
+            )
+
         ingredient = Ingredient.objects.get(title=title)
         units = IngredientValue(
             amount=amount,

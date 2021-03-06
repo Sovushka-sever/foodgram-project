@@ -3,9 +3,7 @@
         <div class="nav__container container">
 
             <ul class="nav__items list">
-
                 {% if user.is_authenticated %}
-
                     <li class="nav__item {% if current_page == "index" %}nav__item_active {% endif %}"><a
                             href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
                     <li class="nav__item {% if current_page == "new_recipe" %}nav__item_active {% endif %}"><a
@@ -17,34 +15,24 @@
                     <li class="nav__item {% if current_page == "shopping_list" %}nav__item_active {% endif %}"><a
                             href="{% url 'shopping_list' %}" class="nav__link link">Список покупок</a> <span
                             class="badge badge_style_blue nav__badge" id="counter">{{ count }}</span></li>
-
                 {% else %}
-
                     <li class="nav__item {% if current_page == "index" %}nav__item_active {% else %}nav__item_disabled{% endif %}">
                         <a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
-
                 {% endif %}
-
             </ul>
 
             <ul class="nav__items list">
-
                 {% if user.is_authenticated %}
-
                     <li class="nav__item"><a href="{% url 'profile' user.username %}" class="nav__link link">Учетная
                         запись: {{ user.username }}</a></li>
                     <li class="nav__item"><a href="{% url 'password_change' %}" class="nav__link link">Изменить
                         пароль</a></li>
                     <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link link">Выход</a></li>
-
                 {% else %}
-
                     <li class="nav__item"><a href="{% url 'login' %}" class="nav__link link">Войти</a></li>
                     <li class="nav__item"><a href="{% url 'signup' %}" class="button button_style_blue">Создать
                         аккаунт</a></li>
-
                 {% endif %}
-
             </ul>
 
         </div>

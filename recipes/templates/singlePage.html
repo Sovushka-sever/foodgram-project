@@ -6,11 +6,9 @@
 
 {% block title %} {{ recipe.name }} {% endblock title %}
 
-
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'pages/single.css' %}">
 {% endblock stylesheet %}
-
 
 {% block content %}
 
@@ -23,44 +21,28 @@
         <div class="single-card__info">
             <div class="single-card__header-info">
                 <h1 class="single-card__title">{{ recipe.name }}</h1>
-
                 {% if user.is_authenticated and user != object.author %}
-
                     <div class="single-card__favorite">
-
                         {% if recipe|is_favorite:user %}
-
                             <button class="button button_style_none" name="favorites"><span
                                     class="icon-favorite icon-favorite_big icon-favorite_active"></span></button>
                             <div class="single-card__favorite-tooltip tooltip">Убрать из избранного</div>
-
                         {% else %}
-
                             <button class="button button_style_none" name="favorites" data-out><span
                                     class="icon-favorite icon-favorite_big"></span></button>
                             <div class="single-card__favorite-tooltip tooltip">Добавить в избранное</div>
-
                         {% endif %}
-
                     </div>
-
                 {% endif %}
-
             </div>
 
             <ul class="single-card__items">
-
                 {% if recipe.tags %}
-
                     {% for tag in recipe.tags.all %}
-
                         <li class="card__item"><span class="badge badge_style_{{ tag.color }}">{{ tag.name }}</span>
                         </li>
-
                     {% endfor %}
-
                 {% endif %}
-
             </ul>
 
             <div class="single-card__items single-card__items_column">
@@ -70,14 +52,11 @@
                     <li class="single-card__item"><p class="single-card__text"><span class="icon-user"></span> <a
                             href="{% url 'profile' recipe.author.username %}"
                             style="color: black">{{ recipe.author.get_full_name }}</a></p></li>
-
                     {% if user == recipe.author %}
-
                         <li class="single-card__item"><a
                                 style="margin-left: 2.5em"
                                 href="{% url 'recipe_edit' recipe.author.username recipe_id %}"
                                 class="single-card__text">Редактировать рецепт</a></li>
-
                     {% endif %}
                 </ul>
 
@@ -85,40 +64,29 @@
 
             <ul class="single-card__items">
                 {% include 'includes/store_button.html' %}
-
                 {% if user.is_authenticated and user.username != profile.username %}
-
                     {% if recipe.author|is_follow:user %}
-
                         <li class="single-card__item">
                             <button class="button button_style_light-blue button_size_auto" name="subscribe">
                                 <span class="icon-check button__icon"></span> Отписаться от автора
                             </button>
-
                             {% else %}
-
                         <li class="single-card__item">
                             <button class="button button_style_light-blue button_size_auto" name="subscribe"
                                     data-out>Подписаться на автора
                             </button>
                         </li>
-
                     {% endif %}
-
                 {% endif %}
-
             </ul>
+
             <div class="single-card__section">
                 <h3 class="single-card__section-title">Ингредиенты:</h3>
                 <div class="single-card__items single-card__items_column">
-
                     {% for item in recipe.recipe_ingredients.all %}
-
                         <p class=" single-card__section-item">{{ item.ingredient.title }}
                             - {{ item.amount }} {{ item.ingredient.dimension }}</p>
-
                     {% endfor %}
-
                 </div>
             </div>
 
@@ -133,15 +101,9 @@
 {% endblock content %}
 
 {% block connect_js %}
-
     {% if user.is_authenticated %}
-
         {% include "includes/connect_js.html" with page="singlePage" %}
-
     {% else %}
-
         {% include "includes/connect_js.html" with page="singlePageNotAuth" %}
-
     {% endif %}
-
 {% endblock connect_js %}

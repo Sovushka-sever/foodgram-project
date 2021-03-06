@@ -11,9 +11,7 @@
         <ul class="card__items">
 
             {% for tag in recipe.tags.all %}
-
                 <li class="card__item"><span class="badge badge_style_{{ tag.color }}">{{ tag.name }}</span></li>
-
             {% endfor %}
 
         </ul>
@@ -24,14 +22,11 @@
                     style="color: black">
 
                 {% if recipe.author.first_name %}
-
                     Рецепты автора: {{ recipe.author.get_full_name }}
-
                 {% else %}
-
                     Рецепты автора: {{ recipe.author.username }}
-
                 {% endif %}
+
             </a></p>
         </div>
     </div>
@@ -40,19 +35,13 @@
         {% include 'includes/store_button.html' %}
 
         {% if user.is_authenticated and user != object.author %}
-
             {% if recipe|is_favorite:user %}
-
                 <button class="button button_style_none" name="favorites"><span
                         class="icon-favorite icon-favorite_active"></span></button>
-
             {% else %}
-
                 <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite"></span>
                 </button>
-
             {% endif %}
-
         {% endif %}
 
     </div>

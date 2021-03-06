@@ -14,37 +14,24 @@
 {% block content %}
 
     <div class="main__header">
-
         {% if is_edit %}
-
             <h1 class="main__title"> Редактирование рецепта </h1>
-
         {% else %}
-
             <h1 class="main__title"> Создание рецепта </h1>
-
         {% endif %}
-
     </div>
 
     <div class="form-container">
         <form class="form" method="post" enctype="multipart/form-data" action="
-
                 {% if is_edit %}{% url 'recipe_edit' recipe.author.username recipe.id %}{% else %}{% url 'new_recipe' %}{% endif %}">
-
             {% csrf_token %}
-
             <div class="form__group">
                 <label for="{{ form.name.id_for_label }}" class="form__label">{{ form.name.label }}</label>
                 <div class="form__field-group">
                     {{ form.name|addclass:"form__input" }}
-
                     {% if form.name.errors %}
-
                         <span class="form__error">{{ form.name.errors.as_text|escape }}</span>
-
                     {% endif %}
-
                 </div>
             </div>
 
@@ -52,9 +39,7 @@
                 <p class="form__label">Теги</p>
                 <div class="form__field-group">
                     <div class="tags">
-
                         {% for tag in all_tags %}
-
                             <div class="tags__item">
                                 <input
                                         type="checkbox"
@@ -66,19 +51,12 @@
                                 <label for="id_{{ tag.slug }}"
                                        class="tags__label">{{ tag.name }}</label>
                             </div>
-
                         {% endfor %}
-
                     </div>
 
-                    {% if form.errors %}
 
-                        {% for error in form.tags.errors %}
-
-                            <span class="form__error">{{ error|escape }}</span>
-
-                        {% endfor %}
-
+                    {% if form.tags.errors %}
+                       <span class="form__error">{{ error|escape }}</span>
                     {% endif %}
 
                 </div>
@@ -101,12 +79,9 @@
                     <div class="form__field-group-ingredientes-container">
 
                         {% for title, amount, dimention in ingredients %}
-
                             {% with forloop.counter as ind %}
-
                                 <div class="form__field-item-ingredient" id="ing_{{ ind }}">
                                     <span>{{ title }} - {{ amount }} - {{ dimention }}.</span>
-
                                     <span class="form__field-item-delete"></span>
                                     <input id="nameIngredient_{{ ind }}" name="nameIngredient_{{ ind }}" type="hidden"
                                            value="{{ title }}">
@@ -115,9 +90,7 @@
                                     <input id="unitsIngredient_{{ ind }}" name="unitsIngredient_{{ ind }}" type="hidden"
                                            value="{{ dimention }}.">
                                 </div>
-
                             {% endwith %}
-
                         {% endfor %}
 
                     </div>
@@ -133,9 +106,7 @@
                     <label for="id_time" class="form__label">минут</label>
 
                     {% if form.cooking_time.errors %}
-
                         <span class="form__error">{{ form.cooking_time.errors.as_text|escape }}</span>
-
                     {% endif %}
 
                 </div>
@@ -148,9 +119,7 @@
                     {{ form.description|addclass:"form__textarea" }}
 
                     {% if form.description.errors %}
-
                         <span class="form__error">{{ form.description.errors.as_text|escape }}</span>
-
                     {% endif %}
 
                 </div>
@@ -160,30 +129,20 @@
                 <span class="form__label">Загрузить фото</span>
                 <div class="form__field-group">
                     {{ form.image }}
-
                     {% if form.image.errors %}
-
                         <span class="form__error">{{ form.image.errors.as_text|escape }}</span>
-
                     {% endif %}
-
                 </div>
             </div>
 
             <div class="form__footer">
-
                 {% if is_edit %}
-
                     <button type="submit" class="button button_style_blue">Сохранить</button>
                     <a style="margin-left: 2.5em" href="{% url 'recipe_delete' recipe.author.username recipe.id %}"
                        class="form__ingredient-link">Удалить</a>
-
                 {% else %}
-
                     <button type="submit" class="button button_style_blue">Создать рецепт</button>
-
                 {% endif %}
-
             </div>
 
         </form>

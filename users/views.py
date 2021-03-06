@@ -10,12 +10,13 @@ class SignUp(CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-        if form.is_valid():
-            user = form.save()
-            user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password1'],
-            )
-            login(request, user)
-            return redirect('index')
-        return render(request, 'reg.html', {'form': form})
+        if not form.is_valid():
+            return render(request, 'reg.html', {'form': form})
+
+        user = form.save()
+        user = authenticate(
+            username=form.cleaned_data['username'],
+            password=form.cleaned_data['password1'],
+        )
+        login(request, user)
+        return redirect('index')

@@ -36,7 +36,7 @@ class Favorites(LoginRequiredMixin, View):
 
     def post(self, request):
         req_ = json.loads(request.body)
-        recipe_id = req_.get('id', None)
+        recipe_id = req_.get('id')
 
         if recipe_id is None:
             return JsonResponse({'success': False}, status=400)
@@ -62,7 +62,7 @@ class Subscribe(LoginRequiredMixin, View):
 
     def post(self, request):
         req_ = json.loads(request.body)
-        author_id = req_.get('id', None)
+        author_id = req_.get('id')
 
         if author_id is None:
             return JsonResponse({'success': False}, status=400)

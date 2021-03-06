@@ -37,16 +37,11 @@
 
 {% endblock content %}
 
+
 {% block connect_js %}
-
     {% if user.is_authenticated %}
-
         {% include "includes/connect_js.html" with page="indexAuth" %}
-
     {% else %}
-
         {% include "includes/connect_js.html" with page="indexNotAuth" %}
-
     {% endif %}
-
 {% endblock connect_js %}

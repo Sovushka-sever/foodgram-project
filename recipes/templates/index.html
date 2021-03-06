@@ -5,7 +5,6 @@
 
 {% block title %} Рецепты {% endblock title %}
 
-
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'pages/index.css' %}">
 {% endblock stylesheet %}
@@ -14,43 +13,29 @@
 {% block content %}
 
     {% csrf_token %}
+
     <div class="main__header">
         <h1 class="main__title">Рецепты</h1>
-
         {% include "includes/tags.html" with page="index" %}
-
     </div>
 
     <div class="card-list">
-
         {% for recipe in page %}
-
             {% include 'includes/recipe.html' %}
-
         {% endfor %}
-
     </div>
 
     {% if page.has_other_pages %}
-
         {% include "includes/paginator.html" with items=page paginator=paginator filters=filters %}
-
     {% endif %}
-
 
 {% endblock content %}
 
 
 {% block connect_js %}
-
     {% if user.is_authenticated %}
-
         {% include "includes/connect_js.html" with page="indexAuth" %}
-
     {% else %}
-
         {% include "includes/connect_js.html" with page="indexNotAuth" %}
-
     {% endif %}
-
 {% endblock connect_js %}
