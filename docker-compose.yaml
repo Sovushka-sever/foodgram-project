@@ -18,7 +18,7 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/etc/letsencrypt/live/foodgram-sv.cf/'
+      device: '/etc/letsencrypt/'
   nginx_templates:
     driver: local
     driver_opts:
@@ -54,12 +54,11 @@ services:
       - static:/usr/share/nginx/html/static/
       - nginx_templates:/etc/nginx/templates
       - media:/usr/share/nginx/html/media/
-      - letsencrypt:/etc/letsencrypt/live/foodgram-sv.cf/
+      - letsencrypt:/mnt/
     ports:
       - "443:443"
     depends_on:
       - foodgram
     environment:
-     - NGINX_PORT="443 ssl"
      - NGINX_SERVERNAME=foodgram-sv.cf
      - NGINX_UPSTREAM=http://foodgram:8000
