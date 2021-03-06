@@ -1,5 +1,5 @@
 server {
-    listen        ${NGINX_PORT};
+    listen       0.0.0.0 ${NGINX_PORT};
     server_name  ${NGINX_SERVERNAME};
     ssl_certificate /etc/letsencrypt/live/foodgram-sv.cf/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/foodgram-sv.cf/privkey.pem;
