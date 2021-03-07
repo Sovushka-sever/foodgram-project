@@ -6,9 +6,15 @@ User = get_user_model()
 
 
 class CreationForm(UserCreationForm):
-    password2 = None
     email = forms.EmailField(required=True)
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email')
+        fields = (
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+            'password1',
+            'password2',
+        )

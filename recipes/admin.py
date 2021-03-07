@@ -39,22 +39,24 @@ class TagAdmin(admin.ModelAdmin):
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('title', 'dimension')
     search_fields = ('title',)
-    list_filter = ('title',)
 
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('user', 'author')
     fields = ('user', 'author')
+    search_fields = ('author__name',)
 
 
 @admin.register(ShoppingList)
 class ShoppingListAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe')
     fields = ('user', 'recipe')
+    search_fields = ('user__name',)
 
 
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe')
     fields = ('user', 'recipe')
+    search_fields = ('user__name',)

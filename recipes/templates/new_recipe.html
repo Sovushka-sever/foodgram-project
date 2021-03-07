@@ -93,6 +93,12 @@
                             {% endwith %}
                         {% endfor %}
 
+                    {% for error in form.errors %}
+                    <span class="form__error">
+                        {{ error }}
+                    </span>
+                    {% endfor %}
+
                     </div>
                 </div>
             </div>
@@ -134,6 +140,15 @@
                     {% endif %}
                 </div>
             </div>
+
+
+        {% if form.errors %}
+            {% for error in form.non_field_errors %}
+            <div class="form__group">
+                <span class="form__error">{{ error|escape }}</span>
+            </div>
+            {% endfor %}
+        {% endif %}
 
             <div class="form__footer">
                 {% if is_edit %}

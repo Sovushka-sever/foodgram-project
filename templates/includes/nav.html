@@ -4,27 +4,32 @@
 
             <ul class="nav__items list">
                 {% if user.is_authenticated %}
-                    <li class="nav__item {% if current_page == "index" %}nav__item_active {% endif %}"><a
-                            href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
-                    <li class="nav__item {% if current_page == "new_recipe" %}nav__item_active {% endif %}"><a
+                    <li class="nav__item {% if request.get_full_path == '/' %}nav__item_active{% endif %}">
+                        <a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
+                    <li class="nav__item {% if 'new' in request.path %}nav__item_active{% endif %}"><a
                             href="{% url 'new_recipe' %}" class="nav__link link">Создать рецепт</a></li>
-                    <li class="nav__item {% if current_page == "subscription" %}nav__item_active {% endif %}"><a
+                    <li class="nav__item {% if 'subscription' in request.path %}nav__item_active{% endif %}"><a
                             href="{% url 'subscription' %}" class="nav__link link">Мои подписки</a></li>
-                    <li class="nav__item {% if current_page == "favorite" %}nav__item_active {% endif %}"><a
+                    <li class="nav__item {% if 'favorite' in request.path %}nav__item_active{% endif %}"><a
                             href="{% url 'favorite' %}" class="nav__link link">Избранное</a></li>
-                    <li class="nav__item {% if current_page == "shopping_list" %}nav__item_active {% endif %}"><a
+                    <li class="nav__item {% if 'shopping_list' in request.path %}nav__item_active{% endif %}"><a
                             href="{% url 'shopping_list' %}" class="nav__link link">Список покупок</a> <span
                             class="badge badge_style_blue nav__badge" id="counter">{{ count }}</span></li>
+                    <li class="nav__item"><a href="{% url 'profile' user.username %}" class="nav__link link">
+                        Аккаунт:
+                        {% if user.first_name %}
+                            {{ user.username|truncatechars:10 }}
+                        {% else %}
+                            {{ user.username|truncatechars:10 }}
+                        {% endif %}</a></li>
                 {% else %}
-                    <li class="nav__item {% if current_page == "index" %}nav__item_active {% else %}nav__item_disabled{% endif %}">
+                    <li class="nav__item {% if request.get_full_path == '/' %}nav__item_active{% else %}nav__item_disabled{% endif %}">
                         <a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
                 {% endif %}
             </ul>
 
             <ul class="nav__items list">
                 {% if user.is_authenticated %}
-                    <li class="nav__item"><a href="{% url 'profile' user.username %}" class="nav__link link">Учетная
-                        запись: {{ user.username }}</a></li>
                     <li class="nav__item"><a href="{% url 'password_change' %}" class="nav__link link">Изменить
                         пароль</a></li>
                     <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link link">Выход</a></li>
